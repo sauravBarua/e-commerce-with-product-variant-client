@@ -38,7 +38,7 @@ export const registerAction = async (
       setTokenInCookies("better-auth.session_token", token, 24 * 60 * 60), // 1 day in seconds
     ]);
 
-    const targetPath = redirectPath || getDefaultDashboardRoute("PATIENT");
+    const targetPath = redirectPath || getDefaultDashboardRoute("CUSTOMER");
     return { success: true, redirectTo: targetPath };
   } catch (error: any) {
     if (

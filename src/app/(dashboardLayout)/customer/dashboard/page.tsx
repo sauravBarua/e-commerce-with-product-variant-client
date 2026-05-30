@@ -1,5 +1,5 @@
 
-const DoctorsDashboard
+const CustomerDashboard
  = () => {
   return (
     <div> Customer Dashboard
@@ -8,4 +8,4 @@ const DoctorsDashboard
   )
 }
 
-export default DoctorsDashboard
+export default CustomerDashboard

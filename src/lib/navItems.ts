@@ -37,24 +37,6 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
   ];
 };
 
-export const doctorNavItems: NavSection[] = [
-  {
-    title: " Patient Management",
-    items: [
-      {
-        title: "Appointments",
-        href: "/doctor/dashboard/appointments",
-        icon: "Calender",
-      },
-      {
-        title: "My Schedules",
-        href: "/doctor/dashboard/my-schedules",
-        icon: "Clock",
-      },
-    ],
-  },
-];
-
 export const adminNavItems: NavSection[] = [
   {
     title: "User Management",
@@ -135,9 +117,6 @@ export const getNavItemsByRole = (role: UserRole): NavSection[] => {
     case "SUPER_ADMIN":
     case "ADMIN":
       return [...commonNavItems, ...adminNavItems];
-
-    case "ADMIN":
-      return [...commonNavItems, ...doctorNavItems];
 
     case "CUSTOMER":
       return [...commonNavItems, ...customerNavItems];

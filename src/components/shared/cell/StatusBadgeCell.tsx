@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { UserStatus } from "@/types/doctor.types";
+import { UserStatus } from "@/types/customer.types";
 
 interface IStatusBadgeCellProps {
     status : UserStatus;

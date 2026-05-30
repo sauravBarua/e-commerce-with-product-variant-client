@@ -1,4 +1,4 @@
-export default function AdminsDoctorsManagementLoading() {
+export default function AdminsProductsManagementLoading() {
   // Or a custom loading skeleton component
   return <p>Loading ...</p>;
 }

@@ -1,4 +1,4 @@
-export default function DoctorAppointmentsLoading() {
+export default function CustomerOrdersLoading() {
   // Or a custom loading skeleton component
-  return <p>Loading Doctor Appointments...</p>;
+  return <p>Loading Orders...</p>;
 }

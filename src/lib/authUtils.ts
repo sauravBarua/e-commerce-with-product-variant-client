@@ -16,11 +16,6 @@ export const commonProtectedRoutes : RouteConfig = {
     pattern : []
 }
 
-export const doctorProtectedRoutes : RouteConfig = {
-    pattern: [/^\/doctor\/dashboard/ ], // Matches any path that starts with /doctor/dashboard
-    exact : []
-}
-
 export const adminProtectedRoutes : RouteConfig = {
     pattern: [/^\/admin\/dashboard/ ], // Matches any path that starts with /admin/dashboard
     exact : []
@@ -31,7 +26,7 @@ export const adminProtectedRoutes : RouteConfig = {
 //     exact : []
 // }
 
-export const patientProtectedRoutes : RouteConfig = {
+export const customerProtectedRoutes : RouteConfig = {
     pattern: [/^\/dashboard/ ], // Matches any path that starts with /dashboard
     exact : [ "/payment/success"]
 };
@@ -58,7 +53,7 @@ export const getRouteOwner = (pathname : string) : "SUPER_ADMIN" | "ADMIN" | "CU
         return "ADMIN";
     }
     
-    if(isRouteMatches(pathname, patientProtectedRoutes)) {
+    if(isRouteMatches(pathname, customerProtectedRoutes)) {
         return "CUSTOMER";
     }
 

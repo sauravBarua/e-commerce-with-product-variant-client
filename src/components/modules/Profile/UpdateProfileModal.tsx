@@ -36,7 +36,7 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
   const queryClient = useQueryClient();
 
   const role: string = user?.role ?? "";
-  const profile = user?.patient ?? user?.doctor ?? user?.admin ?? null;
+  const profile = user?.customer ?? user?.admin ?? null;
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (formData: FormData) => updateProfileAction(formData),
@@ -47,16 +47,6 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
       name: profile?.name ?? "",
       contactNumber: profile?.contactNumber ?? "",
       address: profile?.address ?? "",
-      // doctor-specific
-      designation: user?.doctor?.designation ?? "",
-      qualification: user?.doctor?.qualification ?? "",
-      currentWorkingPlace: user?.doctor?.currentWorkingPlace ?? "",
-      experience: user?.doctor?.experience
-        ? String(user.doctor.experience)
-        : "",
-      appointmentFee: user?.doctor?.appointmentFee
-        ? String(user.doctor.appointmentFee)
-        : "",
     },
     onSubmit: async ({ value }) => {
       setServerError(null);
@@ -66,18 +56,6 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
       if (value.contactNumber)
         formData.append("contactNumber", value.contactNumber);
       if (value.address) formData.append("address", value.address);
-
-      if (role === "DOCTOR") {
-        if (value.designation)
-          formData.append("designation", value.designation);
-        if (value.qualification)
-          formData.append("qualification", value.qualification);
-        if (value.currentWorkingPlace)
-          formData.append("currentWorkingPlace", value.currentWorkingPlace);
-        if (value.experience) formData.append("experience", value.experience);
-        if (value.appointmentFee)
-          formData.append("appointmentFee", value.appointmentFee);
-      }
 
       if (selectedFileRef.current) {
         formData.append("file", selectedFileRef.current);
@@ -196,63 +174,6 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
               />
             )}
           </form.Field>
-
-          {/* Doctor-specific Fields */}
-          {role === "DOCTOR" && (
-            <>
-              <form.Field name="designation">
-                {(field) => (
-                  <AppField
-                    field={field}
-                    label="Designation"
-                    placeholder="e.g. Cardiologist"
-                  />
-                )}
-              </form.Field>
-
-              <form.Field name="qualification">
-                {(field) => (
-                  <AppField
-                    field={field}
-                    label="Qualification"
-                    placeholder="e.g. MBBS, MD"
-                  />
-                )}
-              </form.Field>
-
-              <form.Field name="currentWorkingPlace">
-                {(field) => (
-                  <AppField
-                    field={field}
-                    label="Current Workplace"
-                    placeholder="Hospital or clinic name"
-                  />
-                )}
-              </form.Field>
-
-              <form.Field name="experience">
-                {(field) => (
-                  <AppField
-                    field={field}
-                    label="Experience (years)"
-                    type="number"
-                    placeholder="e.g. 5"
-                  />
-                )}
-              </form.Field>
-
-              <form.Field name="appointmentFee">
-                {(field) => (
-                  <AppField
-                    field={field}
-                    label="Appointment Fee ($)"
-                    type="number"
-                    placeholder="e.g. 50"
-                  />
-                )}
-              </form.Field>
-            </>
-          )}
 
           <AppSubmitButton isPending={isPending} pendingLabel="Saving...">
             Save Changes

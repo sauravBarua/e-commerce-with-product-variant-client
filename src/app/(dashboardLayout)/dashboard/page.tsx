@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 
-const PatientDashboardPage = () => {
+const CustomerDashboardPage = () => {
   redirect("/dashboard/my-orders")
 }
 
-export default PatientDashboardPage
+export default CustomerDashboardPage

@@ -1,4 +1,4 @@
-export default function ConsultationDoctorLoading() {
+export default function ProductLoading() {
   // Or a custom loading skeleton component
-  return <p>Loading Consultation Doctor...</p>;
+  return <p>Loading Product...</p>;
 }

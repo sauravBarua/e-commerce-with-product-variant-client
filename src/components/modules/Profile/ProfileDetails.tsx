@@ -8,17 +8,9 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Briefcase,
-  Building,
-  Calendar,
-  DollarSign,
-  GraduationCap,
-  Hash,
   Mail,
   MapPin,
   Phone,
-  Star,
-  User as UserIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -86,7 +78,7 @@ const ProfileDetails = () => {
   if (!user) return null;
 
   const role: string = user.role;
-  const profile = user.patient ?? user.doctor ?? user.admin ?? null;
+  const profile = user.customer ?? user.admin ?? null;
 
   const initials = profile?.name
     ? profile.name
@@ -114,59 +106,6 @@ const ProfileDetails = () => {
       value: profile?.address,
     },
   ];
-
-  const doctorFields: ProfileField[] =
-    role === "DOCTOR" && user.doctor
-      ? [
-          {
-            icon: <Hash className="h-4 w-4" />,
-            label: "Registration Number",
-            value: user.doctor.registrationNumber,
-          },
-          {
-            icon: <Briefcase className="h-4 w-4" />,
-            label: "Designation",
-            value: user.doctor.designation,
-          },
-          {
-            icon: <GraduationCap className="h-4 w-4" />,
-            label: "Qualification",
-            value: user.doctor.qualification,
-          },
-          {
-            icon: <Building className="h-4 w-4" />,
-            label: "Current Workplace",
-            value: user.doctor.currentWorkingPlace,
-          },
-          {
-            icon: <Calendar className="h-4 w-4" />,
-            label: "Experience",
-            value: user.doctor.experience
-              ? `${user.doctor.experience} years`
-              : null,
-          },
-          {
-            icon: <DollarSign className="h-4 w-4" />,
-            label: "Appointment Fee",
-            value: user.doctor.appointmentFee
-              ? `$${user.doctor.appointmentFee}`
-              : null,
-          },
-          {
-            icon: <UserIcon className="h-4 w-4" />,
-            label: "Gender",
-            value: user.doctor.gender,
-          },
-          {
-            icon: <Star className="h-4 w-4" />,
-            label: "Average Rating",
-            value: user.doctor.averageRating,
-          },
-        ]
-      : [];
-
-  const specialties: { specialty: { title: string } }[] =
-    role === "DOCTOR" ? (user.doctor?.specialties ?? []) : [];
 
   return (
     <div className="container mx-auto max-w-3xl py-10 px-4">
@@ -202,63 +141,6 @@ const ProfileDetails = () => {
               )}
             </div>
           </div>
-
-          {/* Doctor-specific */}
-          {role === "DOCTOR" && doctorFields.some((f) => f.value) && (
-            <>
-              <Separator />
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">
-                  Professional Information
-                </h3>
-                <div className="grid gap-1 sm:grid-cols-2">
-                  {doctorFields.map(
-                    (field, i) =>
-                      field.value && <ProfileFieldRow key={i} {...field} />,
-                  )}
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* Specialties */}
-          {specialties.length > 0 && (
-            <>
-              <Separator />
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">
-                  Specialties
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {specialties.map(
-                    (s: { specialty: { title: string } }, i: number) => (
-                      <Badge key={i} variant="outline">
-                        {s.specialty?.title}
-                      </Badge>
-                    ),
-                  )}
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* Patient appointment count */}
-          {role === "PATIENT" && user.patient?.appointments && (
-            <>
-              <Separator />
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">
-                  Appointments
-                </h3>
-                <p className="text-sm">
-                  Total appointments:{" "}
-                  <span className="font-semibold">
-                    {user.patient.appointments.length}
-                  </span>
-                </p>
-              </div>
-            </>
-          )}
 
           {/* Admin/Super Admin */}
           {(role === "ADMIN" || role === "SUPER_ADMIN") && (

@@ -1,8 +1,8 @@
-import DoctorAppointmentsList from "@/components/modules/Doctor/Appointments/DoctorAppointmentsList";
+import CustomerOrdersList from "@/components/modules/Customer/Orders/CustomerOrdersList";
 import { getMyAppointments } from "@/services/order.services";
 import { redirect } from "next/navigation";
 
-const DoctorsAppointmentsPage = async () => {
+const CustomerOrdersPage = async () => {
   let response;
   try {
     response = await getMyAppointments();
@@ -13,7 +13,7 @@ const DoctorsAppointmentsPage = async () => {
     throw error;
   }
 
-  return <DoctorAppointmentsList appointments={response.data} />;
+  return <CustomerOrdersList appointments={response.data} />;
 };
 
-export default DoctorsAppointmentsPage;
+export default CustomerOrdersPage;
