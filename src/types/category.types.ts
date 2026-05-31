@@ -1,21 +1,10 @@
-export interface ISchedule {
-  id: string
-  startDateTime: string | Date
-  endDateTime: string | Date
-  createdAt?: string | Date
-  updatedAt?: string | Date
-}
-
-export interface ICreateSchedulePayload {
-  startDate: string
-  endDate: string
-  startTime: string
-  endTime: string
-}
-
-export interface IUpdateSchedulePayload {
-  startDate: string
-  endDate: string
-  startTime: string
-  endTime: string
+export interface ICategory {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  icon?: string | null;
+  parentId?: string | null;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
