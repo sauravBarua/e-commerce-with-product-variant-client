@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, X } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ function getPrimaryImage(item: ICartItem): string {
 }
 
 function getVariantLabel(item: ICartItem): string {
-  return item.variant.attributes.map((a) => a.value).join(" / ") || item.variant.sku;
+  return item.variant.attributes.map((a) => a.value).join(" / ") || item.variant.sku || "";
 }
 
 export default function CartPageClient() {

@@ -81,7 +81,8 @@ export const isValidRedirectForRole = (redirectPath : string, role : UserRole) =
     const sanitizedRedirectPath = redirectPath.split("?")[0] || redirectPath;
     const routeOwner = getRouteOwner(sanitizedRedirectPath);
 
-    if(routeOwner === role){
+    // public routes (null owner) are always safe to redirect to
+    if(routeOwner === null || routeOwner === role){
         return true;
     }
 

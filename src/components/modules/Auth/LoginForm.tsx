@@ -38,6 +38,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
       setServerError(null);
       try {
         const result = (await mutateAsync(value)) as any;
+        console.log("login result", result);
 
         if (result.success && result.redirectTo) {
           router.replace(result.redirectTo);
@@ -188,7 +189,8 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
             className="w-full border-gray-300 hover:border-black transition-colors"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              window.location.href = `${baseUrl}/auth/login/google`;
+              const redirect = redirectPath ? `?redirect=${encodeURIComponent(redirectPath)}` : "";
+              window.location.href = `${baseUrl}/auth/login/google${redirect}`;
             }}
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">

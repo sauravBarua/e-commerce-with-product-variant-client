@@ -24,9 +24,9 @@ export const cancelOrder = async (id: string) => {
 
 // Re-export cart helpers so checkout can call them via server actions
 export const getMyCartForCheckout = async () => {
-  return httpClient.get<ICart>("/carts");
+  return httpClient.get<ICart>("/cart");
 };
 
 export const clearCartAfterOrder = async () => {
-  return httpClient.delete<ICart>("/carts");
+  return httpClient.delete<ICart>("/cart");
 };
