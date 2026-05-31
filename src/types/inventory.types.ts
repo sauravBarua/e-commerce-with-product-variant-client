@@ -27,6 +27,7 @@ export interface IProductImage {
 export interface IProductColorGroup {
   id: string;
   colorValue: string;
+  colorCode: string | null;
   images: IProductImage[];
   variants: IProductVariant[];
 }

@@ -125,7 +125,19 @@ export default function ProductDetailsClient({ product }: Props) {
 
         {/* Purchase Panel */}
         <div className="flex flex-col">
-          <h1 className="text-4xl font-bold mb-3">{product.name}</h1>
+          <h1 className="text-4xl font-bold mb-3">
+            {product.name}
+            {colorGroup?.colorValue && (
+              <span className="text-mc-secondary-text font-normal">
+                {" "}— {colorGroup.colorValue}
+              </span>
+            )}
+            {variant?.attributes.find((a) => a.key === "storage")?.value && (
+              <span className="text-mc-secondary-text font-normal">
+                {" "}— {variant.attributes.find((a) => a.key === "storage")?.value}
+              </span>
+            )}
+          </h1>
 
           {/* Rating */}
           {product.averageRating != null && (
@@ -160,15 +172,21 @@ export default function ProductDetailsClient({ product }: Props) {
           </div>
 
           {/* Color Selection */}
-          {product.colorGroups.length > 1 && (
+          {product.colorGroups.length > 0 && (
             <div className="mb-8">
-              <p className="text-sm font-medium mb-3">Select color:</p>
+              <p className="text-sm font-medium mb-3">
+                Select color:{" "}
+                <span className="font-normal text-mc-secondary-text">
+                  {colorGroup?.colorValue}
+                </span>
+              </p>
               <div className="flex gap-3 flex-wrap">
                 {product.colorGroups.map((cg, i) => (
                   <button
                     key={cg.id}
                     onClick={() => handleColorSelect(i)}
-                    style={{ backgroundColor: cg.colorValue }}
+                    style={{ backgroundColor: cg.colorCode ?? cg.colorValue }}
+                    title={cg.colorValue}
                     className={cn(
                       "w-8 h-8 rounded-full transition-all border",
                       selectedColorIdx === i
@@ -313,7 +331,7 @@ export default function ProductDetailsClient({ product }: Props) {
       </section>
 
       {/* ── Reviews ─────────────────────────────────────────── */}
-      <ProductReviews averageRating={product.averageRating} />
+      <ProductReviews averageRating={Number(product.averageRating ?? 0)} />
 
       {/* ── Related Products ─────────────────────────────────── */}
       <RelatedProducts currentProductId={product.id} />
