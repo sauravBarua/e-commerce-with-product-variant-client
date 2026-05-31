@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import QueryProviders from "@/providers/QueryProvider";
+import ReduxProvider from "@/providers/ReduxProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -37,10 +38,12 @@ export default function RootLayout({
         // suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProviders>
-          {children}
-          <Toaster position="top-right" richColors />
-        </QueryProviders>
+        <ReduxProvider>
+          <QueryProviders>
+            {children}
+            <Toaster position="top-right" richColors />
+          </QueryProviders>
+        </ReduxProvider>
       </body>
     </html>
   );

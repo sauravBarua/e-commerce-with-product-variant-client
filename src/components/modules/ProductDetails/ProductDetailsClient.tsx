@@ -11,10 +11,16 @@ import {
   ShieldCheck,
   Star,
 } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { IProduct, IProductColorGroup, IProductVariant } from "@/types/inventory.types";
 import ProductReviews from "@/components/modules/ProductDetails/ProductReviews";
 import RelatedProducts from "@/components/modules/ProductDetails/RelatedProducts";
+import { addToCart } from "@/services/cart.services";
+import { getUserInfo } from "@/services/auth.services";
+import { useAppDispatch } from "@/store/hooks";
+import { addGuestItem } from "@/store/guestCartSlice";
 
 interface Props {
   product: IProduct;
@@ -26,6 +32,52 @@ export default function ProductDetailsClient({ product }: Props) {
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [wishlisted, setWishlisted] = useState(false);
   const [showFullDesc, setShowFullDesc] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
+
+  const { data: userRes } = useQuery({
+    queryKey: ["current-user"],
+    queryFn: () => getUserInfo(),
+    retry: false,
+    staleTime: Infinity,
+  });
+  const user = userRes ?? null;
+
+  const { mutate: mutateServerAddToCart, isPending: addingToCart } = useMutation({
+    mutationFn: () => addToCart(variant?.id ?? "", quantity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      toast.success("Added to cart");
+    },
+    onError: () => toast.error("Failed to add to cart"),
+  });
+
+  const handleAddToCart = () => {
+    if (!variant) return;
+    if (user) {
+      mutateServerAddToCart();
+    } else {
+      const primaryImg =
+        colorGroup?.images.find((i) => i.isPrimary)?.url ??
+        colorGroup?.images[0]?.url ??
+        "/images/placeholder.png";
+      dispatch(
+        addGuestItem({
+          variantId: variant.id,
+          productId: product.id,
+          productName: product.name,
+          colorValue: colorGroup?.colorValue ?? "",
+          colorCode: colorGroup?.colorCode ?? null,
+          imageUrl: primaryImg,
+          variantLabel: getVariantLabel(variant),
+          sku: variant.sku,
+          price: Number(variant.price),
+        }),
+      );
+      toast.success("Added to cart");
+    }
+  };
 
   const colorGroup: IProductColorGroup =
     product.colorGroups[selectedColorIdx] ?? product.colorGroups[0];
@@ -262,9 +314,13 @@ export default function ProductDetailsClient({ product }: Props) {
               />
               {wishlisted ? "Wishlisted" : "Add to Wishlist"}
             </button>
-            <button className="flex-1 py-4 bg-black text-white rounded-lg font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2">
+            <button
+              disabled={addingToCart || stock === 0 || !variant}
+              onClick={() => handleAddToCart()}
+              className="flex-1 py-4 bg-black text-white rounded-lg font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <ShoppingCart className="h-4 w-4" />
-              Add to Cart
+              {addingToCart ? "Adding…" : stock === 0 ? "Out of Stock" : "Add to Cart"}
             </button>
           </div>
 

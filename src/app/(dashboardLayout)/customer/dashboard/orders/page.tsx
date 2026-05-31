@@ -1,19 +1,13 @@
 import CustomerOrdersList from "@/components/modules/Customer/Orders/CustomerOrdersList";
-import { getMyAppointments } from "@/services/order.services";
-import { redirect } from "next/navigation";
 
-const CustomerOrdersPage = async () => {
-  let response;
-  try {
-    response = await getMyAppointments();
-  } catch (error: any) {
-    if (error?.response?.status === 401) {
-      redirect("/login");
-    }
-    throw error;
-  }
-
-  return <CustomerOrdersList appointments={response.data} />;
+const CustomerOrdersPage = () => {
+  return (
+    <div className="p-6">
+      <h1 className="text-xl font-bold mb-6">My Orders</h1>
+      <CustomerOrdersList />
+    </div>
+  );
 };
 
 export default CustomerOrdersPage;
+
